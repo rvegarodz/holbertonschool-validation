@@ -4,7 +4,7 @@
 BINARY_NAME := awesome-api
 LOG_FILE := $(BINARY_NAME).log
 PID_FILE := $(BINARY_NAME).pid
-UNIT_FILE := coverage-unit.out
+UNIT_FILE := coverage-units.out
 COVERAGE_FILE := coverage-integrations.out
 
 build: ## Compile the source code of the application to a binary.

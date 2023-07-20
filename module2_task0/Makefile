@@ -7,7 +7,7 @@ PID_FILE := $(BINARY_NAME).pid
 
 build: ## Compile the source code of the application to a binary.
 	go get github.com/gorilla/mux
-	go build
+	go build -o $(BINARY_NAME)
 
 run: ## Run the application by executing the binary file.
 	./$(BINARY_NAME) > $(LOG_FILE) 2>&1 & \

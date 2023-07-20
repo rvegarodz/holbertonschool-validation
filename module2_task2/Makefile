@@ -1,4 +1,4 @@
-.PHONY: build run stop clean test
+.PHONY: build run stop clean test unit-tests
 
 ## Variables
 BINARY_NAME := awesome-api
@@ -28,7 +28,7 @@ test: ## Test the server.
 	curl http://localhost:9999/health
 	curl http://localhost:9999/hello
 
-unit-test: ## Run the Unit Tests
+unit-tests: ## Run the Unit Tests.
 	go test -short -coverprofile=coverage-units.out
 
 lint: ## Check the Go source file.

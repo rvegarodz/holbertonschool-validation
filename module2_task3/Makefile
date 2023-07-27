@@ -28,15 +28,13 @@ clean: ## Stop the application. Delete the binary and log file.
 	-rm $(UNIT_FILE) || true
 	-rm $(COVERAGE_FILE) || true
 
-test: ## Test the server.
-	make unit-tests
-	make integration-tests
-
 unit-tests: ## Run the Unit Tests.
 	go test -v -short -coverprofile=$(UNIT_FILE)
 
 integration-tests: ## Run the Integration Tests.
 	go test -v -coverprofile=$(COVERAGE_FILE)
+
+test: unit-tests integration-tests ## Test the server.
 
 lint: ## Check the Go source file.
 	golangci-lint run

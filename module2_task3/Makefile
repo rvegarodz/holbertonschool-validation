@@ -33,10 +33,10 @@ test: ## Test the server.
 	make integration-tests
 
 unit-tests: ## Run the Unit Tests.
-	go test -short -coverprofile=$(UNIT_FILE) -run Test_HelloHandler
+	go test -v -short -coverprofile=$(UNIT_FILE)
 
 integration-tests: ## Run the Integration Tests.
-	go test -short -coverprofile=$(COVERAGE_FILE) -run Test_server
+	go test -v -coverprofile=$(COVERAGE_FILE)
 
 lint: ## Check the Go source file.
 	golangci-lint run

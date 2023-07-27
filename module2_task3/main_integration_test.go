@@ -8,30 +8,6 @@ import (
 	"testing"
 )
 
-// Mock HealthCheckHandler function
-func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("ALIVE"))
-}
-
-// Mock HelloHandler function
-func HelloHandler(w http.ResponseWriter, r *http.Request) {
-	name := r.URL.Query().Get("name")
-	if name == "" {
-		http.Error(w, "Name parameter missing", http.StatusBadRequest)
-		return
-	}
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Hello " + name + "!"))
-}
-
-func setupRouter() http.Handler {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/health", HealthCheckHandler)
-	mux.HandleFunc("/hello", HelloHandler)
-	return mux
-}
-
 func Test_server(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Flag `-short` provided: skipping Integration Tests.")
@@ -135,54 +111,4 @@ func Test_server(t *testing.T) {
 			}
 		})
 	}
-	// Test case for HealthCheckHandler
-	t.Run("HealthCheckHandler", func(t *testing.T) {
-		req := httptest.NewRequest("GET", "/health", nil)
-		rec := httptest.NewRecorder()
-
-		HealthCheckHandler(rec, req)
-
-		res := rec.Result()
-		defer res.Body.Close()
-
-		if res.StatusCode != http.StatusOK {
-			t.Errorf("HealthCheckHandler returned wrong status code: got %d, want %d", res.StatusCode, http.StatusOK)
-		}
-
-		expectedBody := "ALIVE"
-		bodyBytes, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			t.Fatal(err)
-		}
-		gotBody := string(bodyBytes)
-		if gotBody != expectedBody {
-			t.Errorf("HealthCheckHandler returned unexpected body: got %q, want %q", gotBody, expectedBody)
-		}
-	})
-
-	// Test case for HelloHandler
-	t.Run("HelloHandler", func(t *testing.T) {
-		name := "Holberton"
-		req := httptest.NewRequest("GET", "/hello?name="+name, nil)
-		rec := httptest.NewRecorder()
-
-		HelloHandler(rec, req)
-
-		res := rec.Result()
-		defer res.Body.Close()
-
-		if res.StatusCode != http.StatusOK {
-			t.Errorf("HelloHandler returned wrong status code: got %d, want %d", res.StatusCode, http.StatusOK)
-		}
-
-		expectedBody := "Hello " + name + "!"
-		bodyBytes, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			t.Fatal(err)
-		}
-		gotBody := string(bodyBytes)
-		if gotBody != expectedBody {
-			t.Errorf("HelloHandler returned unexpected body: got %q, want %q", gotBody, expectedBody)
-		}
-	})
 }
